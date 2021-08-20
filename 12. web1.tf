@@ -18,10 +18,16 @@ user_data = <<USER_DATA
 yum -y update
 yum install -y ruby
 yum install -y aws-cli
+yum install httpd -y
+/bin/systemctl restart httpd.service
+rm -f /var/www/html/index.html  ## index.html 존재 시 배포 중 에러 발생 가능.
+
+
 cd /home/ec2-user
-wget https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/install
-chmod +x ./install
-./install auto
+wget https://aws-codedeploy-eu-west-3.s3.amazonaws.com/latest/codedeploy-agent.noarch.rpm
+yum -y install codedeploy-agent.noarch.rpm
+service codedeploy-agent stop
+service codedeploy-agent start
 USER_DATA
 
   tags = {
